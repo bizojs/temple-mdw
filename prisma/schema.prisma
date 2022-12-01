@@ -18,7 +18,6 @@ model User {
     role          Roles?     @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
     roleId        Int?
     characters    Character[]
-    charId        String?
     callsign      String?
 }
 

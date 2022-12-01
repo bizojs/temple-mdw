@@ -44,7 +44,7 @@
                                     </span>
                                 </span>
                             {/if}
-                            <button on:click={() => { toggleEditVehicleModal(); selected = vehicle}} title="Edit this vehicle" class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm">
+                            <button on:click={() => { toggleEditVehicleModal(); selected = vehicle}} title="Edit this vehicle" class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm text-white">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M96,216H48a8,8,0,0,1-8-8V163.3a7.9,7.9,0,0,1,2.3-5.6l120-120a8,8,0,0,1,11.4,0l44.6,44.6a8,8,0,0,1,0,11.4Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><line x1="216" y1="216" x2="96" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
                             </button>
                             <form action="?/deleteVehicle"
@@ -62,7 +62,7 @@
                                 }}>
                                 <input type="hidden" name="vehicleId" value={vehicle.id}>
                                 <input type="hidden" name="id" value={$page.data?.character?.id}>
-                                <button title="Delete this vehicle" class="bg-red-500 px-2 py-1.5 rounded text-sm">
+                                <button title="Delete this vehicle" class="bg-red-500 px-2 py-1.5 rounded text-sm text-white">
                                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
                                 </button>
                             </form>
@@ -73,23 +73,25 @@
         {:else}
             <span class="text-gray-400">No vehicles found.</span>
         {/if}
-        <button on:click={toggleVehicleModal} class="px-2 py-2 rounded bg-blue-600">Register new vehicle</button>
+        <button on:click={toggleVehicleModal} class="px-2 py-2 rounded bg-blue-600 text-gray-100">
+            Register new vehicle
+        </button>
     </div>
 
     <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
         <span class="font-semibold">Manage Character</span>
         <div class="flex flex-col gap-2">
-            <button on:click={toggleCivModal} class="flex gap-2 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">
+            <button on:click={toggleCivModal} class="flex gap-4 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="176.2 99.7 224.2 99.7 224.2 51.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><path d="M65.8,65.8a87.9,87.9,0,0,1,124.4,0l34,33.9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><polyline points="79.8 156.3 31.8 156.3 31.8 204.3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><path d="M190.2,190.2a87.9,87.9,0,0,1-124.4,0l-34-33.9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
                 <span>Switch character</span>
             </button>
-            <button on:click={toggleEditCivModal} class="flex gap-2 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">
+            <button on:click={toggleEditCivModal} class="flex gap-4 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M96,216H48a8,8,0,0,1-8-8V163.3a7.9,7.9,0,0,1,2.3-5.6l120-120a8,8,0,0,1,11.4,0l44.6,44.6a8,8,0,0,1,0,11.4Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><line x1="216" y1="216" x2="96" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
                 <span>Edit character</span>
             </button>
             <form action="?/deleteCharacter" method="post">
                 <input type="hidden" name="id" value={$page.data?.character?.id}>
-                <button type="submit" class="flex gap-2 items-center px-4 py-2 rounded bg-red-500 w-full text-gray-100">
+                <button type="submit" class="flex gap-4 items-center px-4 py-2 rounded bg-red-500 w-full text-gray-100">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
                     <span>Delete character</span>
                 </button>
@@ -183,6 +185,7 @@
         </div>
         <input type="hidden" name="username" value={$page.data?.user?.username}>
         <input type="hidden" name="id" value={selected.id}>
+        <input type="hidden" name="charId" value={$page.data?.character?.id}>
         <div class="flex gap-2 items-center text-gray-300">
             <button class="bg-gray-500 hover:bg-gray-400 px-3 py-2 rounded-md transition-all" type="submit">
                 Save changes

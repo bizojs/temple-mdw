@@ -1,6 +1,7 @@
 <script>
     import { page } from "$app/stores"
     import { onMount } from "svelte"
+    import { enhance } from "$app/forms"
 
     function openNotepad() {
         let modal = document.getElementById("md-notepad")
@@ -46,9 +47,12 @@
 </script>
 
 <div class="flex flex-col items-center gap-3 mt-20 mx-2 text-center">
-    <h1 class="text-gray-300 text-5xl font-semibold">Hello {$page.data?.user?.callsign}</h1>
+    <h1 class="text-gray-300 text-5xl font-semibold">Welcome back, {$page.data?.user?.callsign}</h1>
     <h2 class="text-gray-400 text-xl">
         Here is your MDT dashboard.
+        <form action="?/resetCallsign" use:enhance>
+            <button type="submit" class="text-blue-500">Reset your callsign</button>
+        </form>
     </h2>
 </div>
 

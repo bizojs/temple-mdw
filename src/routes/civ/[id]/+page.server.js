@@ -23,9 +23,17 @@ export const load = async ({ params, locals }) => {
             vehicles: true
         }
     })
+
     if (!character) {
         throw redirect(302, "/")
     }
+
+    let filtered = locals.user.characters.filter(c => c.id === params.id)
+
+    if (filtered.length < 1) {
+        throw redirect(302, "/")
+    }
+
     return { character }
 }
 
@@ -124,6 +132,7 @@ export const editVehicle = async ({ cookies, request }) => {
     const data = await request.formData()
     const username = data.get("username")
     const id = parseInt(data.get("id"))
+    const charId = data.get("charId")
     const make = data.get("make")
     const model = data.get("model")
     const plate = data.get("plate")
@@ -136,6 +145,24 @@ export const editVehicle = async ({ cookies, request }) => {
 
     if (!user) {
         return invalid(400, { message: "Invalid user found" })
+    }
+
+    let vehicle = await db.vehicle.findUnique({
+        where: { plate }
+    })
+    let vehicleOwnedByChar = await db.character.findUnique({
+        select: {
+            vehicles: {
+                where: { id }
+            }
+        },
+        where: {
+            id: charId
+        }
+    })
+
+    if (vehicle && !vehicleOwnedByChar) {
+        return invalid(400, { message: "That plate already exists" })
     }
 
     await db.vehicle.update({

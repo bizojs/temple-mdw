@@ -6,8 +6,8 @@ node_modules
 .env
 .env.*
 !.env.example
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+vite.config.*.timestamp-*
 prisma/*
 !prisma/*.prisma
+!prisma/*.js
 notes.md
