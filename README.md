@@ -13,13 +13,13 @@ DATABASE_URL="file:./dev.db"
 
 Run the commands `npx prisma generate` and then `npx prisma db push` to generate the database file.
 
-## Seed the database
+## Seed the database (coming soon...)
 
 To create some base values (admin account), run the command `npx prisma db seed`
 
 ## Start the app
 
-Starting the app for local production is as simple as `npm run dev`. If you want it to run on a different port (current is 5000), run `npm run dev -- --port 6969`
+Starting the app for local production is as simple as `npm run dev`. If you want it to run on a different port (current is 4444), run `npm run dev -- --port 6969`
 
 ## Database UI
 
