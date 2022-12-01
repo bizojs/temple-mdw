@@ -1,0 +1,48 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id            String     @id @default(uuid())
+    admin         Boolean    @default(false)
+    username      String     @unique
+    passwordHash  String
+    userAuthToken String     @unique
+    createdAt     DateTime   @default(now())
+    updatedAt     DateTime   @updatedAt
+    role          Roles?     @relation(fields: [roleId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+    roleId        Int?
+    characters    Character[]
+    charId        String?
+    callsign      String?
+}
+
+model Character {
+    id        String  @id @default(uuid())
+    name      String
+    dob       DateTime
+    ethnicity String
+    age       Int
+    vehicles  Vehicle[]
+    User      User[]
+}
+
+model Vehicle {
+    id        Int     @id @default(autoincrement())
+    stolen    Boolean @default(false)
+    plate     String  @unique
+    make      String
+    model     String
+    character Character[]
+}
+
+model Roles {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+    User User[]
+}
