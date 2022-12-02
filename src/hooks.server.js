@@ -21,7 +21,8 @@ export const handle = async ({ event, resolve }) => {
                         dob: true,
                         ethnicity: true,
                         age: true,
-                        vehicles: true
+                        vehicles: true,
+                        licenses: true
                     }
                 },
                 callsign: true

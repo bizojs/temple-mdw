@@ -4,10 +4,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base { }
+@layer base {}
 
 * {
     font-family: 'Rubik', sans-serif;
+}
+
+:root {
+    /* Multiselect dropdown */
+    --sms-options-bg: rgb(28, 28, 28);
+    --sms-border: 2px solid rgba(200, 220, 240, .2);
+    --sms-text-color: rgb(156, 163, 175);
+    --sms-font-size: 1rem;
+    --sms-button-hover-color: #ed5151;
+    --sms-border-radius: 5px 0px 0px 5px;
+}
+
+ul.options {
+    border-radius: 0px 0px 5px 5px;
 }
 
 .tooltip-theme {

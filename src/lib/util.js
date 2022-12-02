@@ -35,3 +35,8 @@ export const toDateInputValue = (date) => {
 	local.setMinutes(date.getMinutes() - date.getTimezoneOffset())
 	return local.toJSON().slice(0, 10)
 }
+
+export const truncate = (str, max = 30) => {
+	if (str.length > max) return `${str.substr(0, max)}...`
+	return str
+}

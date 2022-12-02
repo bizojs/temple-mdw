@@ -20,9 +20,12 @@ export const load = async ({ params, locals }) => {
             dob: true,
             age: true,
             ethnicity: true,
-            vehicles: true
+            vehicles: true,
+            licenses: true
         }
     })
+
+    let licenses = await db.licenses.findMany()
 
     if (!character) {
         throw redirect(302, "/")
@@ -34,7 +37,7 @@ export const load = async ({ params, locals }) => {
         throw redirect(302, "/")
     }
 
-    return { character }
+    return { character, licenses }
 }
 
 /** @type {import('./$types').Action} */
@@ -128,7 +131,7 @@ export const deleteVehicle = async ({ cookies, request }) => {
 }
 
 /** @type {import('./$types').Action} */
-export const editVehicle = async ({ cookies, request }) => {
+export const editVehicle = async ({ request }) => {
     const data = await request.formData()
     const username = data.get("username")
     const id = parseInt(data.get("id"))
@@ -179,7 +182,7 @@ export const editVehicle = async ({ cookies, request }) => {
 }
 
 /** @type {import('./$types').Action} */
-export const editCharacter = async ({ cookies, request }) => {
+export const editCharacter = async ({ request }) => {
     const data = await request.formData()
     const fullname = data.get("fullname")
     const ethnicity = data.get("ethnicity")
@@ -215,5 +218,57 @@ export const editCharacter = async ({ cookies, request }) => {
     return invalid(200, { message: "Your character has been updated" })
 }
 
+/** @type {import('./$types').Action} */
+export const addLicenses = async ({ request, locals }) => {
+    const data = await request.formData()
+    const charId = data.get("character")
+    const licenses = JSON.parse(data.get("licenses"))
+    
+    for (const license of licenses) {
+        await db.character.update({
+            where: { id: charId },
+            data: {
+                licenses: {
+                    connect: {
+                        name: license
+                    }
+                }
+            }
+        })
+    }
+
+    return invalid(200, { message: `You have been granted with the following licenses: ${licenses.join(", ")}` })
+
+}
+
+/** @type {import('./$types').Action} */
+export const removeLicense = async ({ request }) => {
+    const data = await request.formData()
+    const charId = data.get("character")
+    const license = data.get("license")
+
+    await db.character.update({
+        where: { id: charId },
+        data: {
+            licenses: {
+                disconnect: {
+                    name: license
+                }
+            }
+        }
+    })
+
+    return invalid(200, { message: `You have removed your ${license}` })
+
+}
+
 /** @type {import('./$types').Actions} */
-export const actions = { deleteCharacter, registerVehicle, deleteVehicle, editVehicle, editCharacter }
+export const actions = {
+    deleteCharacter,
+    registerVehicle,
+    deleteVehicle,
+    editVehicle,
+    editCharacter,
+    addLicenses,
+    removeLicense
+}

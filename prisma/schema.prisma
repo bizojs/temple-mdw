@@ -29,6 +29,7 @@ model Character {
     age       Int
     vehicles  Vehicle[]
     User      User[]
+    licenses  Licenses[]
 }
 
 model Vehicle {
@@ -44,4 +45,12 @@ model Roles {
     id   Int    @id @default(autoincrement())
     name String @unique
     User User[]
+}
+
+model Licenses {
+    id          Int    @id @default(autoincrement())
+    name        String @unique
+    type        String @unique
+    description String
+    characters  Character[]
 }

@@ -3,15 +3,19 @@
 </svelte:head>
 
 <script>
+    import { toDateInputValue, truncate } from "$lib/util"
     import { error, success } from "$lib/notifications"
     import { tooltip } from "@svelte-plugins/tooltips"
     import { enhance, applyAction } from "$app/forms"
     import Modal from "$lib/Components/Modal.svelte"
     import { invalidateAll } from "$app/navigation"
-    import { toDateInputValue } from "$lib/util"
+    import MultiSelect from "svelte-multiselect"
     import { page } from "$app/stores"
 
-    let selected
+    let test = []
+
+    let selected = []
+    let selectedVehicle
     let civModalOpened = false
     let vehicleModalOpened = false
     let editVehicleModalOpened = false
@@ -53,7 +57,7 @@
                                     </span>
                                 </span>
                             {/if}
-                            <button on:click={() => { toggleEditVehicleModal(); selected = vehicle}} title="Edit this vehicle" use:tooltip={tooltipOptions}  class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm text-white">
+                            <button on:click={() => { toggleEditVehicleModal(); selectedVehicle = vehicle}} title="Edit this vehicle" use:tooltip={tooltipOptions}  class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm text-white">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M96,216H48a8,8,0,0,1-8-8V163.3a7.9,7.9,0,0,1,2.3-5.6l120-120a8,8,0,0,1,11.4,0l44.6,44.6a8,8,0,0,1,0,11.4Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><line x1="216" y1="216" x2="96" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
                             </button>
                             <form action="?/deleteVehicle"
@@ -110,7 +114,67 @@
 
     <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
         <span class="font-semibold">Licenses</span>
-        <span class="text-gray-400">Coming soon...</span>
+        <div class="flex flex-col gap-2">
+            {#if $page.data?.character?.licenses?.length > 0 }
+                {#each $page.data?.character?.licenses as license}
+                    <div class="p-1.5 pl-3 bg-neutral-700 rounded flex justify-between select-none items-center">
+                        <span title={license.description} use:tooltip={tooltipOptions}>{license.name}</span>
+                        <form
+                            action="?/removeLicense"
+                            use:enhance={() => {
+                                return async ({ result }) => {
+                                    invalidateAll()
+                                    if (result.status === 200) {
+                                        return success({ msg: result.data.message })
+                                    }
+                                    if (result.status === 400) {
+                                        return error({ msg: result.data.message })
+                                    }
+                                    await applyAction(result)
+                                }
+                            }}>
+                            <input type="hidden" name="license" value={license.name}>
+                            <input type="hidden" name="character" value={$page.data?.character?.id}>
+                            <button title="Remove your characters {license.name}" use:tooltip={tooltipOptions} class="px-2 py-1 bg-red-500 rounded text-white">
+                                Remove
+                            </button>
+                        </form>
+                    </div>
+                {/each}
+            {:else}
+                <span class="text-gray-400">No licenses found.</span>
+            {/if}
+            <form 
+                action="?/addLicenses"
+                use:enhance={() => {
+                    return async ({ result }) => {
+                        invalidateAll()
+                        if (result.status === 200) {
+                            selected = []
+                            return success({ msg: result.data.message })
+                        }
+                        if (result.status === 400) {
+                            return error({ msg: result.data.message })
+                        }
+                        await applyAction(result)
+                    }
+                }}>
+                <div class="flex flex-col gap-2 mt-5">
+                    <span class="text-gray-400">Add a new license</span>
+                    <div class="flex">
+                        <MultiSelect bind:selected required={true} options={$page.data?.licenses.filter(license => !$page.data?.character?.licenses.some(l => l.id === license.id)).map(l => l.name)} />
+                        <input type="hidden" name="licenses" value={JSON.stringify(selected)}>
+                        <input type="hidden" name="character" value={$page.data?.character?.id}>
+                        <button type="submit" class="bg-gray-300 bg-opacity-20 p-2 rounded-r">Confirm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
+        <span class="font-semibold">Unknown</span>
+        <span class="text-gray-400">Who knows what might be here...</span>
     </div>
 
 </div>
@@ -139,7 +203,7 @@
                 class="p-2 rounded-lg bg-neutral-900 text-gray-100"
                 autocomplete="off"
                 placeholder="Karin"
-                value={selected.make}
+                value={selectedVehicle.make}
                 required
             >
         </div>
@@ -152,7 +216,7 @@
                 class="p-2 rounded-lg bg-neutral-900 text-gray-100"
                 autocomplete="off"
                 placeholder="Futo"
-                value={selected.model}
+                value={selectedVehicle.model}
                 required
             >
         </div>
@@ -164,7 +228,7 @@
                 type="text"
                 class="p-2 rounded-lg bg-neutral-900 text-gray-100"
                 autocomplete="off"
-                value={selected.plate}
+                value={selectedVehicle.plate}
                 required
             >
         </div>
@@ -175,8 +239,8 @@
             {:else}
                 <input id="stolen" name="stolen" type="checkbox" class="w-8 h-8" autocomplete="off" value={selected.stolen}>
             {/if} -->
-            <input type="hidden" name="currentStolen" value={selected.stolen}>
-            {#if selected.stolen}
+            <input type="hidden" name="currentStolen" value={selectedVehicle.stolen}>
+            {#if selectedVehicle.stolen}
                 <div class="flex justify-between items-center gap-2">
                     <span class="text-gray-500">
                         This vehicle is marked as stolen. Check this box to keep it marked as STOLEN.
@@ -193,7 +257,7 @@
             {/if}
         </div>
         <input type="hidden" name="username" value={$page.data?.user?.username}>
-        <input type="hidden" name="id" value={selected.id}>
+        <input type="hidden" name="id" value={selectedVehicle.id}>
         <input type="hidden" name="charId" value={$page.data?.character?.id}>
         <div class="flex gap-2 items-center text-gray-300">
             <button class="bg-gray-500 hover:bg-gray-400 px-3 py-2 rounded-md transition-all" type="submit">

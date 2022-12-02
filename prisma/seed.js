@@ -15,7 +15,12 @@ async function main() {
     console.time("Database seeded in")
     const roleData = [
         { name: "civ" },
-        { name: "leo" },
+        { name: "leo" }
+    ]
+    const licenseData = [
+        { type: "wl",  name: "Weapon License",              description: "The ability to legally own and carry a firearm"          },
+        { type: "dl",  name: "Driver's License",            description: "The ability to own and drive a motor vehicle"            },
+        { type: "cdl", name: "Commercial Driver's License", description: "The ability to own and drive a commercial motor vehicle" }
     ]
     roleData.forEach(async (role) => {
         try {
@@ -27,6 +32,20 @@ async function main() {
             console.log(`Successfully seeded: ROLE:${role.name}`)
         } catch (e) {
             console.log(`Skipping duplicate: ROLE:${role.name}`)
+        }
+    })
+    licenseData.forEach(async (license) => {
+        try {
+            await db.licenses.create({
+                data: {
+                    type: license.type,
+                    name: license.name,
+                    description: license.description,
+                }
+            })
+            console.log(`Successfully seeded: LICENSE:${license.name}`)
+        } catch (e) {
+            console.log(`Skipping duplicate: LICENSE:${license.name}`)
         }
     })
     try {
