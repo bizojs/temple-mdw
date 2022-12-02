@@ -14,7 +14,16 @@ export const handle = async ({ event, resolve }) => {
                 createdAt: true,
                 role: true,
                 admin: true,
-                characters: true,
+                characters: {
+                    select: {
+                        id: true,
+                        name: true,
+                        dob: true,
+                        ethnicity: true,
+                        age: true,
+                        vehicles: true
+                    }
+                },
                 callsign: true
             }
         })

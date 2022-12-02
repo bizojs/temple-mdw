@@ -25,6 +25,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@svelte-plugins/tooltips": "^0.1.6",
 		"dotenv": "^16.0.3"
 	}
 }

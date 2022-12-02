@@ -3,12 +3,13 @@
 </svelte:head>
 
 <script>
+    import { error, success } from "$lib/notifications"
+    import { tooltip } from "@svelte-plugins/tooltips"
     import { enhance, applyAction } from "$app/forms"
-    import { invalidateAll } from "$app/navigation"
     import Modal from "$lib/Components/Modal.svelte"
+    import { invalidateAll } from "$app/navigation"
     import { toDateInputValue } from "$lib/util"
     import { page } from "$app/stores"
-    import { error, success } from "$lib/notifications"
 
     let selected
     let civModalOpened = false
@@ -19,13 +20,21 @@
     const toggleVehicleModal = () => vehicleModalOpened = !vehicleModalOpened
     const toggleEditVehicleModal = () => editVehicleModalOpened = !editVehicleModalOpened
     const toggleEditCivModal = () => editCivModalOpened = !editCivModalOpened
+
+    const tooltipOptions = {
+        animation: "slide",
+        align: "center",
+        theme: "tooltip-theme",
+        autoPosition: true,
+        position: "top"
+    }
 </script>
 
 <div class="my-20 mx-2 text-center">
     <h1 class="text-gray-300 text-5xl font-semibold">{$page.data?.character?.name}</h1>
 </div>
 
-<div class="flex lg:flex-row flex-col flex-wrap gap-10 lg:m-20 m-5">
+<div class="flex lg:flex-row flex-col flex-wrap gap-10 lg:m-20 m-5 justify-center">
     <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
         <span class="font-semibold">Registered Vehicles</span>
         {#if $page.data?.character?.vehicles?.length > 0}
@@ -33,18 +42,18 @@
                 {#each $page.data?.character?.vehicles as vehicle}
                     <div class="flex justify-between p-2 bg-neutral-900 rounded items-center">
                         <div class="flex gap-3 items-center">
-                            <span class="text-gray-500 w-[80px]" title="Vehicle plate">{vehicle.plate}</span>
+                            <span class="text-gray-500 w-[80px]" title="This is your vehicles plate" use:tooltip={tooltipOptions}>{vehicle.plate}</span>
                             <span>{vehicle.make} {vehicle.model}</span>
                         </div>
                         <div class="flex gap-2">
                             {#if vehicle.stolen}
-                                <span title="This vehicle is marked as stolen" class="bg-orange-400 px-2 rounded text-sm flex items-center text-gray-100">
+                                <span title="This vehicle is marked as stolen" use:tooltip={tooltipOptions} class="bg-orange-400 px-2 rounded text-sm flex items-center text-gray-100">
                                     <span class="flex">
                                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="128" y1="80" x2="128" y2="136" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><path d="M164.5,32h-73a7.9,7.9,0,0,0-5.6,2.3L34.3,85.9A7.9,7.9,0,0,0,32,91.5v73a7.9,7.9,0,0,0,2.3,5.6l51.6,51.6a7.9,7.9,0,0,0,5.6,2.3h73a7.9,7.9,0,0,0,5.6-2.3l51.6-51.6a7.9,7.9,0,0,0,2.3-5.6v-73a7.9,7.9,0,0,0-2.3-5.6L170.1,34.3A7.9,7.9,0,0,0,164.5,32Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"></path><circle cx="128" cy="172" r="12"></circle></svg>
                                     </span>
                                 </span>
                             {/if}
-                            <button on:click={() => { toggleEditVehicleModal(); selected = vehicle}} title="Edit this vehicle" class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm text-white">
+                            <button on:click={() => { toggleEditVehicleModal(); selected = vehicle}} title="Edit this vehicle" use:tooltip={tooltipOptions}  class="bg-neutral-700 hover:bg-neutral-600 transition-all px-2 py-1 rounded text-sm text-white">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M96,216H48a8,8,0,0,1-8-8V163.3a7.9,7.9,0,0,1,2.3-5.6l120-120a8,8,0,0,1,11.4,0l44.6,44.6a8,8,0,0,1,0,11.4Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><line x1="216" y1="216" x2="96" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="136" y1="64" x2="192" y2="120" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line></svg>
                             </button>
                             <form action="?/deleteVehicle"
@@ -62,7 +71,7 @@
                                 }}>
                                 <input type="hidden" name="vehicleId" value={vehicle.id}>
                                 <input type="hidden" name="id" value={$page.data?.character?.id}>
-                                <button title="Delete this vehicle" class="bg-red-500 px-2 py-1.5 rounded text-sm text-white">
+                                <button title="Delete this vehicle from your character" use:tooltip={tooltipOptions}  class="bg-red-500 px-2 py-1.5 rounded text-sm text-white">
                                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line><path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
                                 </button>
                             </form>
@@ -82,7 +91,7 @@
         <span class="font-semibold">Manage Character</span>
         <div class="flex flex-col gap-2">
             <button on:click={toggleCivModal} class="flex gap-4 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="176.2 99.7 224.2 99.7 224.2 51.7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><path d="M65.8,65.8a87.9,87.9,0,0,1,124.4,0l34,33.9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><polyline points="79.8 156.3 31.8 156.3 31.8 204.3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><path d="M190.2,190.2a87.9,87.9,0,0,1-124.4,0l-34-33.9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="120" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><path d="M63.8,199.4a72,72,0,0,1,128.4,0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><polyline points="200 128 224 152 248 128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><polyline points="8 128 32 104 56 128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline><path d="M224,152V128A96,96,0,0,0,47.3,75.9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><path d="M32,104v24a96,96,0,0,0,176.7,52.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
                 <span>Switch character</span>
             </button>
             <button on:click={toggleEditCivModal} class="flex gap-4 items-center px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600 transition-all text-gray-100">

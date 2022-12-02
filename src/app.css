@@ -10,6 +10,15 @@
     font-family: 'Rubik', sans-serif;
 }
 
+.tooltip-theme {
+    --tooltip-font-family: 'Rubik', sans-serif;
+    --tooltip-background-color: rgb(8, 8, 8, .8);
+    --tooltip-font-weight: 400;
+    --tooltip-font-size: 14px;
+    --tooltip-arrow-size: 9px;
+    --tooltip-border-radius: 6px;
+}
+
 @keyframes bounceIn {
     from,
     20%,

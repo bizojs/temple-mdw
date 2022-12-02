@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Temple MDW</title>
+</svelte:head>
+
 <script>
     import Modal from "$lib/Components/Modal.svelte"
     import { page } from "$app/stores"
