@@ -18,9 +18,21 @@ async function main() {
         { name: "leo" }
     ]
     const licenseData = [
-        { type: "wl",  name: "Weapon License",              description: "The ability to legally own and carry a firearm"          },
-        { type: "dl",  name: "Driver's License",            description: "The ability to own and drive a motor vehicle"            },
-        { type: "cdl", name: "Commercial Driver's License", description: "The ability to own and drive a commercial motor vehicle" }
+        { 
+            type: "wl",
+            name: "Weapon License",
+            description: "The ability to legally own and carry a concealed firearm for protection"
+        },
+        {
+            type: "dl",
+            name: "Driver's License",
+            description: "The ability to own and operate a motor vehicle"
+        },
+        {
+            type: "cdl",
+            name: "Commercial Driver's License",
+            description: "The ability to own and operate a commercial motor vehicle"
+        }
     ]
     roleData.forEach(async (role) => {
         try {

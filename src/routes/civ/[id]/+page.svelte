@@ -118,7 +118,12 @@
             {#if $page.data?.character?.licenses?.length > 0 }
                 {#each $page.data?.character?.licenses as license}
                     <div class="p-1.5 pl-3 bg-neutral-700 rounded flex justify-between select-none items-center">
-                        <span title={license.description} use:tooltip={tooltipOptions}>{license.name}</span>
+                        <div class="flex items-center gap-2">
+                            <span>{license.name}</span>
+                            <span title={`Having a ${license.name.toLowerCase()} gives you ${license.description.toLowerCase()}.`} use:tooltip={tooltipOptions}>
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></circle><circle cx="128" cy="180" r="12"></circle><path d="M128,144v-8a28,28,0,1,0-28-28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>
+                            </span>
+                        </div>
                         <form
                             action="?/removeLicense"
                             use:enhance={() => {
