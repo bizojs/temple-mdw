@@ -88,7 +88,7 @@
 </div>
 
 <div class="flex lg:flex-row flex-col flex-wrap gap-10 lg:m-20 m-5 justify-center">
-    <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
+    <div class="flex flex-col gap-5 justify-between bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
         <span class="font-semibold">Person search</span>
         {#if searchedChar}
             {#each $page.data?.characters?.filter(c => c.name.toLowerCase() === searchedChar.toLowerCase()) as character}
@@ -109,7 +109,7 @@
             >
         </div>
     </div>
-    <div class="flex flex-col gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
+    <div class="flex flex-col justify-between gap-5 bg-neutral-800 rounded text-gray-300 p-3 lg:w-[45%] w-full">
         <span class="font-semibold">Vehicle search</span>
         {#if searchedVeh}
             {#each $page.data?.vehicles?.filter(v => v.plate.toLowerCase() === searchedVeh.toLowerCase()) as veh}
