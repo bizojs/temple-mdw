@@ -7,6 +7,28 @@ export const load = async ({ locals }) => {
     if (!locals.user || !locals.user.callsign) {
         throw redirect(302, "/")
     }
+    let vehicles = await db.vehicle.findMany({
+        select: {
+            make: true,
+            model: true,
+            plate: true,
+            character: true,
+            stolen: true
+        }
+    })
+    let characters = await db.character.findMany({
+        select: {
+            id: true,
+            name: true,
+            dob: true,
+            age: true,
+            ethnicity: true,
+            vehicles: true,
+            licenses: true
+        }
+    })
+
+    return { characters, vehicles }
 }
 
 /** @type {import('./$types').Action} */

@@ -12,8 +12,6 @@
     import MultiSelect from "svelte-multiselect"
     import { page } from "$app/stores"
 
-    let test = []
-
     let selected = []
     let selectedVehicle
     let civModalOpened = false
